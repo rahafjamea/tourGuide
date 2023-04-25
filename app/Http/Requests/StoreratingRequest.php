@@ -24,7 +24,7 @@ class StoreratingRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            
         ];
     }
 }

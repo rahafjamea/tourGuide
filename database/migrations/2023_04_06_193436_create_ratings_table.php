@@ -15,10 +15,21 @@ class CreateRatingsTable extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
-            $table->integer('site_id');
-            $table->integer('user_id');
+
+            $table->unsignedbigInteger('site_id');
+            $table->foreign('site_id')
+            ->references('id')
+            ->on('sites')
+            ->cascade('delete');
+
+            $table->unsignedbigInteger('user_id');
+            $table->foreign('user_id')
+            ->references('id')
+            ->on('users')
+            ->cascade('delete');
+
             $table->string('rating_text');
-            $table->string('rating_out_five');
+            $table->integer('rating_out_five');
             $table->timestamps();
         });
     }

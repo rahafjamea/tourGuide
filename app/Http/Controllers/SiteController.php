@@ -10,9 +10,9 @@ class SiteController extends Controller
 {
     public function allSites(){
         //$locations=DB::table()
-        $sites= DB::table('sites')
-           ->select('*')
-           -> get();
+        // $sites= DB::table('sites')
+        //    ->select('*')
+        //    -> get();
         return Site::all();
     }
     public function singleSite(Site $site){
