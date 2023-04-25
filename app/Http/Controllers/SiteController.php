@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Site;
 
 class SiteController extends Controller
 {
@@ -12,15 +13,15 @@ class SiteController extends Controller
         $sites= DB::table('sites')
            ->select('*')
            -> get();
-        return response()-> json($sites);
+        return Site::all();
     }
-    public function singleSite($site){
+    public function singleSite(Site $site){
 
 
-        $sites= DB::table('sites')
-           ->select('*')
-           ->where('id', $site)
-           -> get();
+        // $sites= DB::table('sites')
+        //    ->select('*')
+        //    ->where('id', $site)
+        //    -> get();
         $ratings_avg= DB::table('ratings')
            ->where('site_id', $site)
            ->avg('rating_out_five');
@@ -29,7 +30,7 @@ class SiteController extends Controller
            ->where('site_id', $site)
            -> get();
         return response()-> json(array(
-            'site_data' => $sites,
+            'site_data' => $site,
             'ratings_avg' => $ratings_avg,
             'ratings' => $ratings
         ));  

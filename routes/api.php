@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\RouteController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,13 @@ use App\Models\Location;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+// Route::middleware('auth:api')->prefix('v1')->group(function() {
+//     Route::get('/user', function (Request $request) {
+//         return $request->user();
+//     });
 
+    
+// });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -33,4 +40,7 @@ Route::get('/categories/{category}', [CategoryController::class,'singleCategory'
 //sites
 Route::get('/sites', [SiteController::class,'allSites']);
 Route::get('/sites/{site}', [SiteController::class,'singleSite']); 
+
+Route::post('/routes', [RouteController::class,'create']); 
+
 

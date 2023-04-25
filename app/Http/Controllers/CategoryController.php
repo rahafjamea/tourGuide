@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use App\Models\Site;
 
 use Illuminate\Support\Facades\DB;
 
@@ -17,12 +18,12 @@ class CategoryController extends Controller
            ->select('category')
            -> distinct()
            -> get();
-        $sites= DB::table('sites')
-           ->select('*')
-           -> get();
+        // $sites= DB::table('sites')
+        //    ->select('*')
+        //    -> get();
         return response()-> json(array(
                 'categories' => $categories,
-                'sites' => $sites
+                'sites' => Site::all()
             ));  
     }
 
