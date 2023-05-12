@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Route;
+use App\Models\User;
 use illuminate\Auth;
 use App\Http\Requests\StoreRouteRequest;
 use App\Http\Requests\UpdateRouteRequest;
+use Illuminate\Support\Facades\DB;
 
 class RouteController extends Controller
 {
@@ -16,17 +18,37 @@ class RouteController extends Controller
      */
     public function index()
     {
-        Route::all();
+        return Route::all();
     }
-
+    public function userRoutes(User $user)
+    {
+        $routes= DB::table('routes')
+          ->select('*')
+          ->where('user_id', $user->id)
+          ->get();
+        return response()-> json($routes);  
+    }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(StoreRouteRequest $request)
     {
-        //
+        $route = new \App\Models\Route();
+        $route->user_id = $request->user_id;
+        if (!$route->save()) {
+            return response()->json([
+                "status" => "fail"
+            ]);
+        }
+        //route successful
+        else{
+        return response()->json([
+            "status" => "success",
+            "route_id" => $route->id
+        ]);
+        }
     }
 
     /**
@@ -37,13 +59,18 @@ class RouteController extends Controller
      */
     public function store(StoreRouteRequest $request)
     {
-        $route = Route::create([
-            $request->input('name')
-            //'user_id' => Auth::id()
+        // $route = Route::create([
+        //     'user_id' => $request->input('user_id')
+        //     //'user_id' => Auth::id()
 
-        ]
-        );
+        // ]
+        
+        // );
+        // return $request->input('user_id');
+
     }
+
+    
 
     /**
      * Display the specified resource.

@@ -17,7 +17,12 @@ class CreateSitesTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('location');
-            $table->string('category');
+            //table->unsignedbigInteger('category');
+            //$table->foreign('category')
+            //->references('id')
+            //->on('category_sites');
+            //->cascade('delete');
+            //$table->string('category');
             $table->string('opening_hours');
             $table->longText('description');
             $table->boolean('is_hidden_gem');

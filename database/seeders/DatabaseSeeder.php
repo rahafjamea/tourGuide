@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         Site::create([
             'title' => 'ommayad mosqe',
             'location' => 'location',
-            'category' => 'historicall',
+            //'category' => 'historicall',
             'opening_hours' => '6-7',
             'description'  => 'ffffffffffffffffffffffff',
             'is_hidden_gem' => false,
@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         Site::create([
             'title' => 'ommayad mosqe',
             'location' => 'location',
-            'category' => 'historical',
+            //'category' => 'historical',
             'opening_hours' => '6-7',
             'description'  => 'ffffffffffffffffffffffff',
             'is_hidden_gem' => false,
