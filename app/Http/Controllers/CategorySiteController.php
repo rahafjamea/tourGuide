@@ -20,38 +20,32 @@ class CategorySiteController extends Controller
         return CategorySite::all();
     }
 
-    public function allCategories(){
-        //fluent
-        //DB::table('posts')->where('id',1) -> get()
+//     public function allCategories(){
+//         //fluent
+//         //DB::table('posts')->where('id',1) -> get()
 
-        $categories= DB::table('categories')
-           ->select('*')
-           //-> distinct()
-           -> get();
-        // $sites= DB::table('sites')
-        //    ->select('*')
-        //    -> get();
-        return response()-> json(array(
-                'categories' => $categories,
-                'sites' => Site::all()
-            ));  
-  }
+//         $categories= DB::table('categories')
+//            ->select('*')
+//            //-> distinct()
+//            -> get();
+//         // $sites= DB::table('sites')
+//         //    ->select('*')
+//         //    -> get();
+//         return response()-> json(array(
+//                 'categories' => $categories,
+//                 'sites' => Site::all()
+//             ));  
+//   }
 
   public function singleCategory($category){
-        $categories= DB::table('categories')
-          ->select('*')
-          //-> distinct()
-          -> get();
+        
         $sites= DB::table('category_sites')
           ->join('sites', 'category_sites.site_id', '=', 'sites.id')
           ->join('categories', 'category_sites.category_id', '=', 'categories.id')
           ->select('*')
           -> where('category_title', $category)
           -> get();
-        return response()-> json(array(
-                'categories' => $categories,
-                'sites' => $sites
-            ));  
+        return $sites;  
   }
 
     /**
@@ -80,10 +74,6 @@ class CategorySiteController extends Controller
 
     }
     
-    public function addSiteCategory(Request $request, Category $category)
-    {
-        //
-    }
     /**
      * Store a newly created resource in storage.
      *

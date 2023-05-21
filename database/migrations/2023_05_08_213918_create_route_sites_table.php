@@ -26,7 +26,8 @@ class CreateRouteSitesTable extends Migration
             ->references('id')
             ->on('sites')
             ->cascade('delete');
-            $table->integer('order')->nullable();
+            $table->integer('day');
+            $table->integer('order');
             $table->timestamps();
             $table->primary(array('route_id','site_id'));
         });

@@ -56,13 +56,15 @@ class userController extends Controller
             'name' => 'required',
             'nationality' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required'
+            'password' => 'required',
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
         ]);
 
         $data['name'] = $request->name;
         $data['nationality'] = $request->nationality;
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
+        $data['image']= $request->file('image')->store('image', 'public');
 
         $user = User::create($data);
 
@@ -134,14 +136,31 @@ class userController extends Controller
             }
         }
 
-        public function updateProfile(Request $request){
+        public function updateProfile(Request $request, User $user){
             $request->validate([
                 'name' => 'required',
                 'nationality' => 'required',
                 'email' => 'required|email|unique:users',
-                'password' => 'required'
+                'password' => 'required',
+                'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
             ]);
 
+
+
+            if ($request->has('image')) {
+                $request->validate([
+                    'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
+                ]);
+                $user->image = $request->file('image')->store('image', 'public');
+            }
+
+            $user->update();
+
+            return response()->json([
+             "status" => "success",
+             "message" => "user updated successfully",
+             "user" => $user
+            ]);
 
         }
     }

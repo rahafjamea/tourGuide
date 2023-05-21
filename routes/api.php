@@ -8,6 +8,7 @@ use App\Http\Controllers\RouteSiteController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Location;
@@ -40,16 +41,15 @@ Route::post('/categories', [CategoryController::class,'create']);
 Route::delete('/categories/{category}', [CategoryController::class,'destroy']); 
 Route::put('/categories/{category}', [CategoryController::class,'update']); 
 
-//categories+sites need to make categories many to many
-Route::get('/categorysites', [CategorySiteController::class,'allCategories']);
-//categories+sites of selected category
+//categories
+Route::get('/categorysites', [CategorySiteController::class,'index']);
+//sites of selected category
 Route::get('/categorysites/{category}', [CategorySiteController::class,'singleCategory']);
 Route::post('/categorysites', [CategorySiteController::class,'create']);
 Route::delete('/routesites/{category}/{site}', [CategorySiteController::class,'destroy']);
-Route::post('/routesites/{site}', [CategorySiteController::class,'addSiteCategory']);
-//need updating
 
-//sites //need updating
+
+//sites //update need testing
 Route::get('/sites', [SiteController::class,'allSites']);
 Route::get('/sites/{site}', [SiteController::class,'singleSite']);
 Route::post('/sites', [SiteController::class,'create']);
@@ -74,6 +74,8 @@ Route::get('/ratings', [RatingController::class,'index']);
 Route::post('/ratings', [RatingController::class,'create']); 
 Route::get('/ratings/{site}', [RatingController::class,'siteRating']); 
 Route::delete('/ratings/{rating}', [RatingController::class,'destroy']); 
+
+Route::post('/image', [ImageController::class,'imageStore']); 
 
 //not working
 Route::post('/login', [userController::class, 'loginPost'])->name('login.post'); //we can access the route by this name

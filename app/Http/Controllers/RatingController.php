@@ -96,7 +96,7 @@ class RatingController extends Controller
      * @param  \App\Models\rating  $rating
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateratingRequest $request, rating $rating)
+    public function update(UpdateratingRequest $request, Rating $rating)
     {
         //
     }
