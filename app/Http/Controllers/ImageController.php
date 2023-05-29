@@ -11,19 +11,17 @@ class ImageController extends Controller
     public function imageStore(Request $request)
     {
         $this->validate($request, [
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'site_id' => 'required'
         ]);
 
         $image = new \App\Models\Image();
 
         $image_path = $request->file('image')->store('image', 'public');
+
         $image->image = $image_path;
-        if ($request->has('site_id')) {
-            $image->site_id = $request->site_id;
-        }
-        if ($request->has('user_id')) {
-            $image->user_id = $request->user_id;
-        }
+        $image->site_id = $request->site_id;
+        
         $image->save();
         if (!$image->save()) {
             return response()->json([
@@ -111,6 +109,7 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
-        //
+        $image->delete();
+        return response(null,204);
     }
 }

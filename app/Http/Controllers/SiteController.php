@@ -16,15 +16,28 @@ class SiteController extends Controller
         //   ->leftjoin('images', 'images.site_id', '=', 'sites.id')
         //   ->select('sites.id','title', 'location', 'opening_hours','description','is_hidden_gem',
         //    'sites.created_at','sites.updated_at', 'image')
+        //   ->groupBy('sites.id')
         //   -> get();
         // return $sites;
-        return Site::all();
+        $sites= Site::all();
+
+        $images= DB::table('sites')
+          ->join('images', 'images.site_id', '=', 'sites.id')
+          ->select('sites.id', 'image')
+          //->groupBy('sites.id')
+          -> get();
+
+        return response()-> json(array(
+            'site_data' => $sites,
+            'images' => $images,
+        ));
+        //return Site::all();
     }
     public function singleSite(Site $site){
-        // $image = DB::table('images')
-        // ->select('image')
-        // ->where('site_id', $site->id)
-        // -> get();
+        $image = DB::table('images')
+        ->select('image')
+        ->where('site_id', $site->id)
+        -> get();
         $ratings_avg= DB::table('ratings')
            ->where('site_id', $site->id)
            ->avg('rating_out_five');
@@ -35,7 +48,7 @@ class SiteController extends Controller
 
         return response()-> json(array(
             'site_data' => $site,
-            //'images' => $image,
+            'images' => $image,
             'ratings_avg' => $ratings_avg,
             'ratings' => $ratings
         ));  
@@ -55,12 +68,12 @@ class SiteController extends Controller
         $site->opening_hours = $request->opening_hours;
         $site->description = $request->description;
         $site->is_hidden_gem = $request->is_hidden_gem;
-        if ($request->has('image')) {
-            $request->validate([
-                'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
-            ]);
-            $site->image = $request->file('image')->store('image', 'public');
-        }
+        // if ($request->has('image')) {
+        //     $request->validate([
+        //         'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
+        //     ]);
+        //     $site->image = $request->file('image')->store('image', 'public');
+        // }
 
 
         if (!$site->save()) {
@@ -103,12 +116,12 @@ class SiteController extends Controller
             if ($request->has('is_hidden_gem')) {
                 $site->is_hidden_gem = $request->is_hidden_gem;
             }
-            if ($request->has('image')) {
-                $request->validate([
-                    'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
-                ]);
-                $site->image = $request->file('image')->store('image', 'public');
-            }
+            // if ($request->has('image')) {
+            //     $request->validate([
+            //         'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
+            //     ]);
+            //     $site->image = $request->file('image')->store('image', 'public');
+            // }
     
 
             $site->update();

@@ -22,11 +22,6 @@ class CreateImagesTable extends Migration
             ->references('id')
             ->on('sites')
             ->cascade('delete');
-            $table->unsignedbigInteger('user_id')->nullable();
-            $table->foreign('user_id')
-            ->references('id')
-            ->on('users')
-            ->cascade('delete');
             //$table->string('alt')->nullable();
 
             //$table->string('mime_type')->nullable();

@@ -20,7 +20,7 @@ class CreateSitesTable extends Migration
             $table->string('opening_hours');
             $table->longText('description');
             $table->boolean('is_hidden_gem');
-            $table->string('image')->nullable()->default(null);
+            //$table->string('image')->nullable();
             $table->timestamps();
         });
     }

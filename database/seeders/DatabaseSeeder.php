@@ -28,8 +28,7 @@ class DatabaseSeeder extends Seeder
             //'category' => 'historicall',
             'opening_hours' => '6-7',
             'description'  => 'ffffffffffffffffffffffff',
-            'is_hidden_gem' => false,
-            'image' => null
+            'is_hidden_gem' => false
         ]);
         Site::create([
             'title' => 'ommayad mosqe',
@@ -37,8 +36,7 @@ class DatabaseSeeder extends Seeder
             //'category' => 'historical',
             'opening_hours' => '6-7',
             'description'  => 'ffffffffffffffffffffffff',
-            'is_hidden_gem' => false,
-            'image' => null
+            'is_hidden_gem' => false
         ]);
         Rating::create([
             'site_id' => 1,

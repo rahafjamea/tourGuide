@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Validator;
+use Laravel\Passport\HasApiTokens;
 
 class userController extends Controller
 {
