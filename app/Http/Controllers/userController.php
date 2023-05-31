@@ -78,21 +78,21 @@ class userController extends Controller
         ]);
     }
 
-    public function updateName(Request $request)
-    {
+    // public function updateName(Request $request)
+    // {
         
-       $user = auth()->user();
-       $user->name = $request->name;
-       $user->update();
+    //    $user = auth()->user();
+    //    $user->name = $request->name;
+    //    $user->update();
 
-        return response()->json([
-            'user' => $user,
-        ]);
-    }
+    //     return response()->json([
+    //         'user' => $user,
+    //     ]);
+    // }
 
     public function update(Request $request)
     {
-        $user = auth()->user();
+        $user = auth()->user()->id;
 
         if ($request->has('name')) {
             $validator = Validator::make($request->all(), [
