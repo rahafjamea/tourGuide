@@ -2,173 +2,159 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Validator;
-use Laravel\Passport\HasApiTokens;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Auth\AuthManager;
+use Illuminate\Auth\AuthServiceProvioder;
+use Auth;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use Error;
 
 class userController extends Controller
 {
-    function login()
+    public function constructer()
     {
-        return view('login');
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
-
-    function loginPost(Request $request)
-    {
-        $request -> validate([
-            'email' => 'required',
-            'password' => 'required'
-        ]);
-
-        $credentials = $request->only('email', 'password');
-
-        if ($token = Auth::attempt($credentials)) {
-            //login successful
-            $userr= Auth::user();
-            return response()->json([
-                "message" => "login successful!",
-                "success" => (string)1,
-                "id" => (string)$request->id,
-                "user" => $request->user(),
-                "userr" => $userr,
-                "token" => $token
-        ]); }
-
-            //login unsuccessful
-            return response()->json([
-                "message" => "Incorrect login, try again!",
-                "success" => (string)0,
-            ]);
-      }
-
-    function registration()
-    {
-        return view('registration');
-    }
-
-    function registrationPost(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
+    public function register(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
             'nationality' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
+            'email' => 'required|string||max:100|unique:users',
+            'password' => 'required|string|min:6',
         ]);
-
-        $data['name'] = $request->name;
-        $data['nationality'] = $request->nationality;
-        $data['email'] = $request->email;
-        $data['password'] = Hash::make($request->password);
-        $data['image']= $request->file('image')->store('image', 'public');
-
-        $user = User::create($data);
-
-        //registeration not successful
-        if (!$user) {
-            return response()->json([
-                "status" => "fail"
-            ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
         }
-        //registeration successful
-        else{
-        // return response()->json([
-        //     "status" => "success",
-        //     "message" => "registration successful!",
-        //     "id" => (string)$user->id,
-        //     "user" => $user
-
-        // ]);
-        return $this->loginPost($request);
-        }
-    }
-
-    function logout()
-    {
-        Session::flush();
-        Auth::logout();
+        $user = User::create(
+            array_merge(
+                $validator->validated(),
+                ['password' => bcrypt($request->password)]
+            )
+        );
         return response()->json([
-            "status" => "success",
-            "message" => "user logged out"
-        ]);
-    }
-    public function logoutt(Request $request)
-    {
-        if(!User::checkToken($request)){
-            return response()->json([
-             'message' => 'Token is required',
-             'success' => false,
-            ],422);
-        }
-        
-        try {
-            Auth::invalidate(Auth::parseToken($request->token));
-            return response()->json([
-                'success' => true,
-                'message' => 'User logged out successfully'
-            ]);
-        } catch (Exception $exception) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Sorry, the user cannot be logged out'
-            ], 500);
-        }
+            'message' => 'User successfully registered',
+            'user' => $user
+        ], 201);
     }
 
-    public function getProfile(Request $request){
-        try{
-            $user_id = $request->user()->id;
-            $data = User::findByID($user_id);
-            return response()->json([
-                "status" => "success",
-                "message" => "User Profile",
-                "data" => $data
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        if (!$token = auth()->attempt($validator->validated())) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        return $this->createNewToken($token);
+    }
+
+    public function createNewToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            //'expires_in' => auth()->factory()->getTTL()*60,
+            'user' => auth()->user()
+        ]);
+    }
+
+    public function profile(){
+        return response()->json(auth()->user());
+    }
+
+    public function logout(){
+        auth()->logout();
+        return response()->json([
+            'message' => 'User successfully logged out',
+        ]);
+    }
+
+    public function updateName(Request $request)
+    {
+        
+       $user = auth()->user();
+       $user->name = $request->name;
+       $user->update();
+
+        return response()->json([
+            'user' => $user,
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        $user = auth()->user();
+
+        if ($request->has('name')) {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|between:2,100',
             ]);
-           } catch(\Exception $e){
-                return response()->json([
-                    "status" => "fail",
-                    "message" => $e->getMessage(),
-                    "data" => []],500);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+            else {
+            $user->name = $request->name;
+            $user->update();
             }
         }
 
-        public function updateProfile(Request $request, User $user){
-            $request->validate([
-                'name' => 'required',
+        if ($request->has('nationality')) {
+            $validator = Validator::make($request->all(), [
                 'nationality' => 'required',
-                'email' => 'required|email|unique:users',
-                'password' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+            $user->nationality = $request->nationality;
+            $user->update();
+        }
+
+        if ($request->has('email')) {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|string|email|max:100|unique:users',
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+            $user->email = $request->email;
+            $user->update();
+        }
+
+        if ($request->has('password')) {
+            $validator = Validator::make($request->all(), [
+                'password' => 'required|string|min:6',
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+            $user->password = $request->password;
+            $user->update();
+        }
+
+        if ($request->has('image')) {
+            $request->validate([
                 'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
             ]);
-
-
-
-            if ($request->has('image')) {
-                $request->validate([
-                    'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
-                ]);
-                $user->image = $request->file('image')->store('image', 'public');
-            }
-
+            $user->image = $request->file('image')->store('image', 'public');
             $user->update();
+        }
+
+        
 
             return response()->json([
-             "status" => "success",
-             "message" => "user updated successfully",
-             "user" => $user
+                "status" => "success",
+                "message" => "user updated successfully",
+                "user" => $user
             ]);
-
         }
     }
-
-
-
-
-
-
 

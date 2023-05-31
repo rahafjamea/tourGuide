@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\Category;
 use App\Models\CategorySite;
 use Illuminate\Database\Seeder;
@@ -22,6 +23,12 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(5)->create();
 
+        User::create([
+            'name' => 'rahaf jamea',
+            'nationality' => 'Syrian',
+            'email' => 'rahaf@gmail.com',
+            'password' => '345678'
+        ]);
         Site::create([
             'title' => 'ommayad mosqe',
             'location' => 'location',
