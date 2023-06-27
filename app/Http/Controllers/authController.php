@@ -43,6 +43,7 @@ class authController extends Controller
                 ['password' => bcrypt($request->password)]
             )
         );
+        $this->login($request);
         $route = (new routeController)->create();
         return response()->json([
             'message' => 'User successfully registered',
