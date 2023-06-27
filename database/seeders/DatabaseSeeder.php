@@ -19,29 +19,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory(5)->create();
+        //\App\Models\User::factory(5)->create();
 
-        User::create([
+        /*User::create([
             'name' => 'rahaf jamea',
             'nationality' => 'Syrian',
             'email' => 'rahaf@gmail.com',
             'password' => '345678'
-        ]);
+        ]);*/
         Site::create([
             'title' => 'ommayad mosqe',
-            'location' => 'location',
+            'longitude' => '333',
+            'latitude' => '666',
             //'category' => 'historicall',
             'opening_hours' => '6-7',
-            'description' => 'ffffffffffffffffffffffff',
-            'is_hidden_gem' => false
+            'description' => 'ffffffffffffffffffffffff'
         ]);
         Site::create([
             'title' => 'ommayad mosqe',
-            'location' => 'location',
+            'longitude' => '333',
+            'latitude' => '666',
             //'category' => 'historical',
             'opening_hours' => '6-7',
-            'description' => 'ffffffffffffffffffffffff',
-            'is_hidden_gem' => false
+            'description' => 'ffffffffffffffffffffffff'
         ]);
         Rating::create([
             'site_id' => 1,
