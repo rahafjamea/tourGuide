@@ -27,9 +27,9 @@ class authController extends Controller
             'nationality' => 'required',
             'email' => 'required|string||max:100|unique:users',
             'password' => 'required|string|min:6',
-            'no_of_days' => 'required|number'
+            'no_of_days' => 'required|numeric'
         ]);
-        $v = Validator::make($request->all(), ['no_of_days' => 'required|number'
+        $v = Validator::make($request->all(), ['no_of_days' => 'required|numeric'
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
