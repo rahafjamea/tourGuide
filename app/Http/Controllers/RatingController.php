@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Rating;
 use App\Models\Site;
-use App\Http\Requests\StoreratingRequest;
-use App\Http\Requests\UpdateratingRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,10 +21,10 @@ class RatingController extends Controller
 
     public function siteRating(Site $site)
     {
-        $ratings= DB::table('ratings')
-           ->select('*')
-           ->where('site_id', $site->id)
-           -> get();
+        $ratings = DB::table('ratings')
+            ->select('*')
+            ->where('site_id', $site->id)
+            ->get();
         return $ratings;
     }
 
@@ -37,10 +35,10 @@ class RatingController extends Controller
      */
     public function create(Request $request)
     {
-        $rating = new \App\Models\Rating();
-        $rating->user_id = $request->user_id;
-        $rating->site_id = $request->site_id;
-        $rating->rating_text = $request->rating_text;
+        $rating                  = new \App\Models\Rating();
+        $rating->user_id         = auth()->user()->id;
+        $rating->site_id         = $request->site_id;
+        $rating->rating_text     = $request->rating_text;
         $rating->rating_out_five = $request->rating_out_five;
         if (!$rating->save()) {
             return response()->json([
@@ -48,23 +46,18 @@ class RatingController extends Controller
             ]);
         }
         //rating successful
-        else{
-        return response()->json([
-            "status" => "success",
-            "rating_id" => $rating->id
-        ]);
+        else {
+            return response()->json([
+                "status" => "success",
+                "rating_id" => $rating->id
+            ]);
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreratingRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreratingRequest $request)
+
+    public function store(Request $request)
     {
-        
+
     }
 
     /**
@@ -89,14 +82,8 @@ class RatingController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateratingRequest  $request
-     * @param  \App\Models\rating  $rating
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateratingRequest $request, Rating $rating)
+
+    public function update(Request $request, Rating $rating)
     {
         //
     }
@@ -110,6 +97,6 @@ class RatingController extends Controller
     public function destroy(Rating $rating)
     {
         $rating->delete();
-        return response(null,204);
+        return response(null, 204);
     }
 }

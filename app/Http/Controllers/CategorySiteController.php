@@ -17,14 +17,14 @@ class CategorySiteController extends Controller
      */
     public function index()
     {
-        return CategorySite::all();
+        //return CategorySite::all();
     }
 
-//     public function allCategories(){
+    //     public function allCategories(){
 //         //fluent
 //         //DB::table('posts')->where('id',1) -> get()
 
-//         $categories= DB::table('categories')
+    //         $categories= DB::table('categories')
 //            ->select('*')
 //            //-> distinct()
 //            -> get();
@@ -34,19 +34,20 @@ class CategorySiteController extends Controller
 //         return response()-> json(array(
 //                 'categories' => $categories,
 //                 'sites' => Site::all()
-//             ));  
+//             ));
 //   }
 
-  public function singleCategory($category){
-        
-        $sites= DB::table('category_sites')
-          ->join('sites', 'category_sites.site_id', '=', 'sites.id')
-          ->join('categories', 'category_sites.category_id', '=', 'categories.id')
-          ->select('*')
-          -> where('category_title', $category)
-          -> get();
-        return $sites;  
-  }
+    public function singleCategory($category)
+    {
+
+        $sites = DB::table('category_sites')
+            ->join('sites', 'category_sites.site_id', '=', 'sites.id')
+            ->join('categories', 'category_sites.category_id', '=', 'categories.id')
+            ->select('*')
+            ->where('category_title', $category)
+            ->get();
+        return $sites;
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -55,25 +56,25 @@ class CategorySiteController extends Controller
      */
     public function create(Request $request)
     {
-        $categorySite = new \App\Models\CategorySite();
+        $categorySite              = new \App\Models\CategorySite();
         $categorySite->category_id = $request->category_id;
-        $categorySite->site_id = $request->site_id;
+        $categorySite->site_id     = $request->site_id;
         if (!$categorySite->save()) {
             return response()->json([
                 "status" => "fail"
             ]);
         }
         //creating successful
-        else{
-        return response()->json([
-            "status" => "success",
-            //"category_site_id" => $categorySite->id
-        ]);
+        else {
+            return response()->json([
+                "status" => "success",
+                //"category_site_id" => $categorySite->id
+            ]);
         }
 
 
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -127,10 +128,10 @@ class CategorySiteController extends Controller
      */
     public function destroy(Category $category, Site $site)
     {
-        $delete= DB::table('category_sites')
-           ->where('category_id', $category->id)
-           ->where('site_id', $site->id)
-           -> delete();
+        $delete = DB::table('category_sites')
+            ->where('category_id', $category->id)
+            ->where('site_id', $site->id)
+            ->delete();
         return $delete;
     }
 }

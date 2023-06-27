@@ -19,19 +19,18 @@ class ImageController extends Controller
 
         $image_path = $request->file('image')->store('image', 'public');
 
-        $image->image = $image_path;
+        $image->image   = $image_path;
         $image->site_id = $request->site_id;
-        
+
         $image->save();
         if (!$image->save()) {
             return response()->json([
                 "status" => "fail"
             ]);
-        }
-        else{
-        return response()->json([
-            "status" => "success"
-        ]);
+        } else {
+            return response()->json([
+                "status" => "success"
+            ]);
         }
 
         return response($image, Response::HTTP_CREATED);
@@ -110,6 +109,6 @@ class ImageController extends Controller
     public function destroy(Image $image)
     {
         $image->delete();
-        return response(null,204);
+        return response(null, 204);
     }
 }

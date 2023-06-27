@@ -2,24 +2,22 @@
 
 namespace Database\Seeders;
 
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\CategorySite;
-use Illuminate\Database\Seeder;
 use App\Models\Rating;
 use App\Models\Route;
 use App\Models\RouteSite;
 use App\Models\Site;
 
-
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         \App\Models\User::factory(5)->create();
 
@@ -34,7 +32,7 @@ class DatabaseSeeder extends Seeder
             'location' => 'location',
             //'category' => 'historicall',
             'opening_hours' => '6-7',
-            'description'  => 'ffffffffffffffffffffffff',
+            'description' => 'ffffffffffffffffffffffff',
             'is_hidden_gem' => false
         ]);
         Site::create([
@@ -42,7 +40,7 @@ class DatabaseSeeder extends Seeder
             'location' => 'location',
             //'category' => 'historical',
             'opening_hours' => '6-7',
-            'description'  => 'ffffffffffffffffffffffff',
+            'description' => 'ffffffffffffffffffffffff',
             'is_hidden_gem' => false
         ]);
         Rating::create([
@@ -59,7 +57,7 @@ class DatabaseSeeder extends Seeder
             'site_id' => 1
         ]);
         Route::create([
-            'user_id' => 1
+            'user_id' => 7
         ]);
         RouteSite::create([
             'route_id' => 1,
@@ -67,6 +65,5 @@ class DatabaseSeeder extends Seeder
             'order' => 1,
             'day' => 1
         ]);
-
     }
 }
