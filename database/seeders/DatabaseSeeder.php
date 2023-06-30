@@ -43,12 +43,12 @@ class DatabaseSeeder extends Seeder
             'opening_hours' => '6-7',
             'description' => 'ffffffffffffffffffffffff'
         ]);
-        Rating::create([
-            'site_id' => 1,
-            'user_id' => 3,
-            'rating_out_five' => 3,
-            'rating_text' => 'very nice'
-        ]);
+        // Rating::create([
+        //     'site_id' => 1,
+        //     'user_id' => 3,
+        //     'rating_out_five' => 3,
+        //     'rating_text' => 'very nice'
+        // ]);
         Category::create([
             'category_title' => 'historical'
         ]);
@@ -56,14 +56,15 @@ class DatabaseSeeder extends Seeder
             'category_id' => 1,
             'site_id' => 1
         ]);
-        Route::create([
-            'user_id' => 7
-        ]);
-        RouteSite::create([
-            'route_id' => 1,
-            'site_id' => 1,
-            'order' => 1,
-            'day' => 1
-        ]);
+        // Route::create([
+        //     'user_id' => 1,
+        //     'no_of_days' => 3
+        // ]);
+        // RouteSite::create([
+        //     'route_id' => 1,
+        //     'site_id' => 1,
+        //     'order' => 1,
+        //     'day' => 1
+        // ]);
     }
 }

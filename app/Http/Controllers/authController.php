@@ -23,7 +23,8 @@ class authController extends Controller
     }
     public function register(Request $request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
             'nationality' => 'required',
             'email' => 'required|string||max:100|unique:users',
             'password' => 'required|string|min:6',
@@ -44,7 +45,7 @@ class authController extends Controller
             )
         );
         $this->login($request);
-        $route = (new routeController)->create();
+        $route = (new routeController)->create($request);
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user,
@@ -88,30 +89,33 @@ class authController extends Controller
         ]);
     }
 
-    public function updateName(Request $request)
-    {
-       $user = auth()->user()->id;
-       $user->name = $request->name;
-       $user->save();
-
-        return response()->json([
-            'user' => $user,
-        ]);
-    }
 
     public function update(Request $request)
     {
         $user = auth()->user()->id;
 
-        if ($request->has('name')) {
+        if ($request->has('first_name')) {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|string|between:2,100',
+                'first_name' => 'required|string|between:2,100',
             ]);
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 422);
             }
             else {
-            $user->name = $request->name;
+            $user->first_name = $request->first_name;
+            $user->save();
+            }
+        }
+
+        if ($request->has('last_name')) {
+            $validator = Validator::make($request->all(), [
+                'last_name' => 'required|string|between:2,100',
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+            else {
+            $user->last_name = $request->lasst_name;
             $user->save();
             }
         }

@@ -20,6 +20,7 @@ class CreateRoutesTable extends Migration
                 ->references('id')
                 ->on('users')
                 ->cascade('delete');
+            $table->integer('no_of_days');
             $table->timestamps();
         });
     }

@@ -11,15 +11,6 @@ class SiteController extends Controller
 {
     public function allSites()
     {
-
-        //for image table
-        // $sites = DB::table('sites')
-        //   ->leftjoin('images', 'images.site_id', '=', 'sites.id')
-        //   ->select('sites.id','title', 'location', 'opening_hours','description','is_hidden_gem',
-        //    'sites.created_at','sites.updated_at', 'image')
-        //   ->groupBy('sites.id')
-        //   -> get();
-        // return $sites;
         $sites = Site::all();
 
         $images = DB::table('sites')
@@ -69,12 +60,6 @@ class SiteController extends Controller
         $site->latitude = $request->latitude;
         $site->opening_hours = $request->opening_hours;
         $site->description   = $request->description;
-        // if ($request->has('image')) {
-        //     $request->validate([
-        //         'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
-        //     ]);
-        //     $site->image = $request->file('image')->store('image', 'public');
-        // }
 
 
         if (!$site->save()) {
@@ -118,12 +103,6 @@ class SiteController extends Controller
         if ($request->has('description')) {
             $site->description = $request->description;
         }
-        // if ($request->has('image')) {
-        //     $request->validate([
-        //         'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
-        //     ]);
-        //     $site->image = $request->file('image')->store('image', 'public');
-        // }
 
 
         $site->update();

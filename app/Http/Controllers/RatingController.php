@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class RatingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return Rating::all();
@@ -28,11 +23,6 @@ class RatingController extends Controller
         return $ratings;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
         $rating                  = new \App\Models\Rating();
@@ -49,51 +39,11 @@ class RatingController extends Controller
         else {
             return response()->json([
                 "status" => "success",
-                "rating_id" => $rating->id
+                "rating" => $rating
             ]);
         }
     }
 
-
-    public function store(Request $request)
-    {
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\rating  $rating
-     * @return \Illuminate\Http\Response
-     */
-    public function show(rating $rating)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\rating  $rating
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Rating $rating)
-    {
-        //
-    }
-
-
-    public function update(Request $request, Rating $rating)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\rating  $rating
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Rating $rating)
     {
         $rating->delete();

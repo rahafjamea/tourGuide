@@ -10,33 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class CategorySiteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //return CategorySite::all();
-    }
-
-    //     public function allCategories(){
-//         //fluent
-//         //DB::table('posts')->where('id',1) -> get()
-
-    //         $categories= DB::table('categories')
-//            ->select('*')
-//            //-> distinct()
-//            -> get();
-//         // $sites= DB::table('sites')
-//         //    ->select('*')
-//         //    -> get();
-//         return response()-> json(array(
-//                 'categories' => $categories,
-//                 'sites' => Site::all()
-//             ));
-//   }
-
     public function singleCategory($category)
     {
 
@@ -44,16 +17,11 @@ class CategorySiteController extends Controller
             ->join('sites', 'category_sites.site_id', '=', 'sites.id')
             ->join('categories', 'category_sites.category_id', '=', 'categories.id')
             ->select('*')
-            ->where('category_title', $category)
+            ->where('categories.id', $category)
             ->get();
         return $sites;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
         $categorySite              = new \App\Models\CategorySite();
@@ -68,64 +36,13 @@ class CategorySiteController extends Controller
         else {
             return response()->json([
                 "status" => "success",
-                //"category_site_id" => $categorySite->id
+                "category_site" => $categorySite
             ]);
         }
 
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CategorySite  $categorySite
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CategorySite $categorySite)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CategorySite  $categorySite
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CategorySite $categorySite)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CategorySite  $categorySite
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, CategorySite $categorySite)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\CategorySite  $categorySite
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Category $category, Site $site)
     {
         $delete = DB::table('category_sites')
