@@ -75,3 +75,8 @@ Route::delete('/ratings/{rating}', [RatingController::class, 'destroy']);
 //post image for site
 Route::post('/image', [ImageController::class, 'imageStore']);
 
+Route::get('/exp/{question}', [RouteSiteController::class, 'dummygetexp']);
+Route::post('/exp', [RouteSiteController::class, 'dummypostexp']);
+Route::post('/exp/done', [RouteSiteController::class, 'doneexp']); //adds recommended sites to routeS
+//Route::get('/exprec', [RouteSiteController::class, 'dummyrecexp']);
+

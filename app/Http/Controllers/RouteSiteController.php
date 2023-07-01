@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Support\Facades\Redis;
 
 class RouteSiteController extends Controller
 {
@@ -88,4 +89,52 @@ class RouteSiteController extends Controller
     }
 
     
+    public function dummygetexp(int $question)
+    {
+        if ($question==1) return response()->json([
+            "question" => "Which of these historical sites are you interested in? (you can select more than one)",
+            "type" => "checkbox",
+            "options" => ["Museums, Old Houses and Palaces", "Old Markets" ,"Hisotical Monuments"]
+        ]);
+        else return response()->json([
+            "question" => "Are you interested in historical sites?",
+            "type" => "radio",
+            "options" => ["yes", "no"]
+        ]);
+        
+    }
+    public function dummypostexp(Request $request)
+    {
+        $answer=$request->answer;
+        return response()->json([
+            "state" => "success",
+            "answer" => $answer
+        ]);
+    }
+    public function dummyrecexp()
+    {
+        $arr = array(
+
+            array(
+                'Site'=> '14', 'Day'=> 1, 'Order'=> 1
+            ),
+            array(
+                'Site'=> '17', 'Day'=> 1, 'Order'=> 1
+            ),
+            array('Site'=> '16,', 'Day'=> 1, 'Order'=> 3),
+            array('Site'=> '36,', 'Day'=> 2, 'Order'=> 2),
+            array('Site'=> '24,', 'Day'=> 2, 'Order'=> 3),
+            array('Site'=> '26,', 'Day'=> 3, 'Order'=> 1),
+            array('Site'=> '39,', 'Day'=> 3, 'Order'=> 2),
+            array('Site'=> '3,', 'Day'=> 3, 'Order'=> 3)
+        );
+        return json_encode($arr);
+    }
+
+    public function doneexp(Request $request)
+    {
+        $request=$request->merge(['site_id' => 1,'day' => 1, 'order' => 1,]);
+        $route=$this->create($request);
+        return $route;
+    }
 }
